@@ -208,7 +208,7 @@ class Project(object):
 
         project_node = ET.fromstring(response.content)
         name = _parse_text(project_node, 'name')
-        return Project(project_id, name)
+        return Project(project_id, name, _parse_array(project_node, 'point_scale'))
 
     def get_stories(self, filter_string):
         """Given a filter strong, returns an list of stories matching that filter.  If none will return an empty list

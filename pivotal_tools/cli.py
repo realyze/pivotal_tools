@@ -36,14 +36,14 @@ Create a story
 
 
 Usage:
-  pivotal_tools create (feature|bug|chore) <title> [<description>] [--project-index=<pi>]
-  pivotal_tools (start|finish|deliver|accept|reject) story <story_id> [--project-index=<pi>]
-  pivotal_tools show stories [--project-index=<pi>] [--for=<user_name>] [--number=<number_of_stories>]
-  pivotal_tools show story <story_id> [--project-index=<pi>]
-  pivotal_tools open <story_id> [--project-index=<pi>]
-  pivotal_tools changelog [--project-index=<pi>]
-  pivotal_tools scrum [--project-index=<pi>] [--show-finished] [--show-delivered]
-  pivotal_tools (planning|poker) [--project-index=<pi>]
+  pivotal_tools create (feature|bug|chore) <title> [<description>] [--project-id=<pid>] [--project-index=<pi>]
+  pivotal_tools (start|finish|deliver|accept|reject) story <story_id> [--project-index=<pi>] [--project-id=<pid>]
+  pivotal_tools show stories [--project-id=<pid>] [--project-index=<pi>] [--for=<user_name>] [--number=<number_of_stories>]
+  pivotal_tools show story <story_id> [--project-index=<pi>] [--project-id=<pid>]
+  pivotal_tools open <story_id> [--project-index=<pi>] [--project-id=<pid>]
+  pivotal_tools changelog [--project-index=<pi>] [--project-id=<pid>]
+  pivotal_tools scrum [--project-index=<pi>] [--project-id=<pid>] [--show-finished] [--show-delivered]
+  pivotal_tools (planning|poker) [--project-index=<pi>] [--project-id=<pid>]
 
 Options:
   -h --help             Show this screen.
@@ -52,6 +52,7 @@ Options:
                         the project shows up in my prompt. This is useful if
                         you do not want to be prompted, and then you can pipe
                         the output
+  --project-id=<pid>    Only show stories for project with this project id
   --show-finished       Show finished (but undelivered) stories, if your
                         workflow requires this
   --show-delivered      Show delivered stories, if your workflow requires this
@@ -353,6 +354,10 @@ def bold(string):
 
 
 def prompt_project(arguments):
+    if arguments['--project-id'] is not None:
+        project = Project.load_project(arguments['--project-id'])
+        return project
+
     """prompts the user for a project, if not passed in as a argument"""
     projects = Project.all()
 
