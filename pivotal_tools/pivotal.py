@@ -82,13 +82,16 @@ class Story(object):
 
 
     @classmethod
-    def find(cls, story_id, project_index=None):
+    def find(cls, story_id, project_index=None, project_id=None):
         project = None
-        if project_index is None:
-            project = find_project_for_story(story_id)
+        if project_id is not None:
+            project = Project.load_project(project_id)
+
+        elif project_index is not None:
+            project = Project.all()[project_index]
 
         else:
-            project = Project.all()[project_index]
+            project = find_project_for_story(story_id)
 
         if project is not None:
             return project.load_story(story_id)

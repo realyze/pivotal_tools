@@ -272,7 +272,10 @@ def poker(project):
 
 def load_story(story_id, arguments):
     story = None
-    if arguments['--project-index'] is not None and arguments['--project-index'].isdigit():
+    if arguments['--project-id'] is not None:
+        pid = arguments['--project-id']
+        story = Story.find(story_id, project_id=pid)
+    elif arguments['--project-index'] is not None and arguments['--project-index'].isdigit():
         idx = int(arguments['--project-index']) - 1
         story = Story.find(story_id, project_index=idx)
     else:
