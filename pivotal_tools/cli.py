@@ -409,7 +409,7 @@ def check_api_token():
         If you do not have one, login to pivotal, and go to your profile page,
         and scroll to the bottom. You'll find it there.
         """)
-        exit()
+        exit(1)
 
 
 def initials(full_name):
