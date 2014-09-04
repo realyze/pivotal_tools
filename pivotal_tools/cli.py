@@ -34,6 +34,10 @@ create (feature|bug|chore)
 ---------------
 Create a story
 
+add comment
+-----------
+Will add a comment to the specified story.
+
 
 Usage:
   pivotal_tools create (feature|bug|chore) <title> [<description>] [--project-id=<pid>] [--project-index=<pi>]
@@ -44,6 +48,7 @@ Usage:
   pivotal_tools changelog [--project-index=<pi>] [--project-id=<pid>]
   pivotal_tools scrum [--project-index=<pi>] [--project-id=<pid>] [--show-finished] [--show-delivered]
   pivotal_tools (planning|poker) [--project-index=<pi>] [--project-id=<pid>]
+  pivotal_tools add comment <story_id> <comment> [--project-index=<pi>] [--project-id=<pid>]
 
 Options:
   -h --help             Show this screen.
@@ -308,6 +313,23 @@ def create_story(project, arguments):
     stories = {'story': story}
 
     project.create_story(stories)
+
+
+def update_story(arguments):
+    story = None
+    if '<story_id>' in arguments:
+        story_id = arguments['<story_id>']
+        story = load_story(story_id, arguments)
+
+    if story is not None:
+        try:
+            if arguments['comment']:
+                story.add_comment(arguments['<comment>'])
+                print("Story: [{}] comment added".format(story.story_id,))
+        except InvalidStateException as e:
+            print(e.message)
+    else:
+        print("hmmm could not find story")
 
 
 def update_status(arguments):
@@ -578,6 +600,8 @@ def main():
         create_story(project, arguments)
     elif arguments['story']:
         update_status(arguments)
+    elif arguments['add']:
+        update_story(arguments)
     else:
         print(arguments)
 

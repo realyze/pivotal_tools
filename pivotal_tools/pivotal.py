@@ -6,6 +6,7 @@ try:
 except ImportError:
     from urllib import quote  # flake8: noqa
 import xml.etree.ElementTree as ET
+import json
 
 # 3rd Party Imports
 import requests
@@ -155,6 +156,15 @@ class Story(object):
         response = _perform_pivotal_put(update_story_url)
         return response
 
+    def add_comment(self, comment):
+        """changes the estimate of a story"""
+        comment=quote(comment.encode('utf-8'), safe=b'')
+        update_story_url = "https://www.pivotaltracker.com/services/v3/projects/{}/stories/{}/notes".format(self.project_id, self.story_id)
+        import ipdb; ipdb.set_trace()
+        note_xml = dicttoxml.dicttoxml({"note": {"text": comment}}, root=False)
+        response = _perform_pivotal_post(update_story_url, note_xml)
+        return response
+
     def finish(self):
         if self.estimate == -1:
             raise InvalidStateException('Story must be estimated')
@@ -286,7 +296,10 @@ def _perform_pivotal_get(url):
 
 
 def _perform_pivotal_put(url):
-    headers = {'X-TrackerToken': TOKEN, 'Content-Length': 0}
+    headers = {
+        'X-TrackerToken': TOKEN,
+        'Content-Length': 0
+    }
     response = requests.put(url, headers=headers)
     response.raise_for_status()
     return response
