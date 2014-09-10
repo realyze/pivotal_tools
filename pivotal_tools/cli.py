@@ -328,8 +328,10 @@ def update_story(arguments):
                 print("Story: [{}] comment added".format(story.story_id,))
         except InvalidStateException as e:
             print(e.message)
+            sys.exit(1)
     else:
         print("hmmm could not find story")
+        sys.exit(1)
 
 
 def update_status(arguments):
@@ -365,8 +367,10 @@ def update_status(arguments):
 
         except InvalidStateException as e:
             print(e.message)
+            sys.exit(1)
     else:
         print("hmmm could not find story")
+        sys.exit(1)
 
 
 
@@ -397,7 +401,7 @@ def prompt_project(arguments):
             return project
         except:
             print('Yikes, that did not work -- try again?')
-            exit()
+            exit(1)
 
     while True:
         print("Select a Project:")

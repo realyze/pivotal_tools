@@ -158,7 +158,6 @@ class Story(object):
 
     def add_comment(self, comment):
         """changes the estimate of a story"""
-        comment=quote(comment.encode('utf-8'), safe=b'')
         update_story_url = "https://www.pivotaltracker.com/services/v3/projects/{}/stories/{}/notes".format(self.project_id, self.story_id)
         note_xml = dicttoxml.dicttoxml({"note": {"text": comment}}, root=False)
         response = _perform_pivotal_post(update_story_url, note_xml)
